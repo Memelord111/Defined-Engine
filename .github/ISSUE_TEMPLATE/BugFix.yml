@@ -1,0 +1,42 @@
+name: Bug Fix
+description: Describe a bug and code to fix such bug
+labels: [bugfix]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "Describe your bug here."
+    validations:
+      required: true
+
+  - type: textarea
+    id: terminal
+    attributes:
+      label: "Command Prompt/Terminal logs (if existing)"
+      render: bash
+    validations:
+      required: false
+
+  - type: textarea
+    id: bugfixfile
+    attributes:
+      label: "File that causes the bug"
+      render: bash
+    validations:
+      required: true
+    
+    - type: textarea
+    id: bugfixline
+    attributes:
+      label: "What line/lines from the file causes the bug"
+      render: bash
+    validations:
+      required: false
+
+  - type: textarea
+    id: bugfix
+    attributes:
+      label: "Code to Fix The Bug"
+      render: bash
+    validations:
+      required: false
