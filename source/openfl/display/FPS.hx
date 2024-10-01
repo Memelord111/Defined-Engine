@@ -1,5 +1,6 @@
 package openfl.display;
 
+import openfl.utils.Assets;
 import haxe.Timer;
 import openfl.events.Event;
 import openfl.text.TextField;
@@ -46,7 +47,7 @@ class FPS extends TextField
 		currentFPS = 0;
 		selectable = false;
 		mouseEnabled = false;
-		defaultTextFormat = new TextFormat("_sans", 14, color);
+		defaultTextFormat = new TextFormat(Paths.font("comic.ttf"), 14, color);
 		autoSize = LEFT;
 		multiline = true;
 		text = "FPS: ";

@@ -4,6 +4,8 @@ package;
 import Discord.DiscordClient;
 #end
 import editors.ChartingState;
+import flixel.util.FlxTimer;
+import flixel.tweens.FlxEase;
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -61,7 +63,7 @@ class FreeplayState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
+		DiscordClient.changePresence("In Freeplay", null);
 		#end
 
 		for (i in 0...WeekData.weeksList.length) {
@@ -111,10 +113,13 @@ class FreeplayState extends MusicBeatState
 
 		for (i in 0...songs.length)
 		{
-			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
+			var songText:Alphabet = new Alphabet(0,(i * 0.5) + 315, songs[i].songName, true);
 			songText.isMenuItem = true;
+			songText.screenCenter(X); 			
+			songText.changeX = false;
 			songText.targetY = i - curSelected;
 			grpSongs.add(songText);
+			
 
 			var maxWidth = 980;
 			if (songText.width > maxWidth)
@@ -138,7 +143,7 @@ class FreeplayState extends MusicBeatState
 		WeekData.setDirectoryFromWeek();
 
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
-		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
+		scoreText.setFormat(Paths.font("comic.ttf"), 32, FlxColor.WHITE, RIGHT);
 
 		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 66, 0xFF000000);
 		scoreBG.alpha = 0.6;
@@ -194,7 +199,7 @@ class FreeplayState extends MusicBeatState
 		var size:Int = 18;
 		#end
 		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
-		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
+		text.setFormat(Paths.font("comic.ttf"), size, FlxColor.WHITE, RIGHT);
 		text.scrollFactor.set();
 		add(text);
 		super.create();
