@@ -290,7 +290,7 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 				}
 			}
 
-			if(controls.RESET)
+			if(controls.RESET && FlxG.keys.pressed.SHIFT)
 			{
 				for (i in 0...optionsArray.length)
 				{
@@ -320,6 +320,33 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				reloadCheckboxes();
 			}
+
+			if(controls.RESET && !FlxG.keys.pressed.SHIFT)
+				{
+					var leOption:GameplayOption = optionsArray[curSelected];
+					leOption.setValue(leOption.defaultValue);
+					if(leOption.type != 'bool')
+					{
+						if(leOption.type == 'string')
+						{
+							leOption.curOption = leOption.options.indexOf(leOption.getValue());
+						}
+						updateTextFrom(leOption);
+					}
+					if(leOption.name == 'Scroll Speed')
+					{
+						leOption.displayFormat = "%vX";
+						leOption.maxValue = 60;
+						if(leOption.getValue() > 60)
+						{
+							leOption.setValue(60);
+						}
+						updateTextFrom(leOption);
+					}
+					leOption.change();
+					FlxG.sound.play(Paths.sound('cancelMenu'));
+					reloadCheckboxes();
+				}
 		}
 
 		if(nextAccept > 0) {
