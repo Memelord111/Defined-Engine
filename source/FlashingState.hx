@@ -1,5 +1,5 @@
 package;
-
+//Press ENTER To Disable Flashing Lights.
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
@@ -24,13 +24,13 @@ class FlashingState extends MusicBeatState
 		add(bg);
 
 		warnText = new FlxText(0, 0, FlxG.width,
-			"Hey, watch out!\n
-			This Mod contains some flashing lights!\n
-			Press ENTER to disable them now or go to Options Menu.\n
-			Press ESCAPE to ignore this message.\n
-			You've been warned!",
+			"Please Read\n
+			This Engine Is Currently In a Beta\n
+			There Will Be Bugs!\n
+			Press ENTER To Disable Flashing Lights.\n
+			Press ESCAPE to ignore this message.",
 			32);
-		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
+		warnText.setFormat(Paths.font("comic"), 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
 		add(warnText);
 	}
