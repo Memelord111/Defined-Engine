@@ -362,6 +362,7 @@ class ChartingState extends MusicBeatState
 		\n
 		\nEsc - Test your chart inside Chart Editor
 		\nEnter - Play your chart
+		\nShift + Enter - Play your chart at the current section
 		\nQ/E - Decrease/Increase Note Sustain Length
 		\nSpace - Stop/Resume song";
 
@@ -1736,6 +1737,9 @@ class ChartingState extends MusicBeatState
 				PlayState.SONG = _song;
 				FlxG.sound.music.stop();
 				if(vocals != null) vocals.stop();
+				if (FlxG.keys.pressed.SHIFT) {
+					PlayState.startOnTime = sectionStartTime();
+				}
 
 				//if(_song.stage == null) _song.stage = stageDropDown.selectedLabel;
 				StageData.loadDirectory(_song);
