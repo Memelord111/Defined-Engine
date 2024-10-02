@@ -34,6 +34,9 @@ class ClientPrefs {
 	public static var checkForUpdates:Bool = true;
 	public static var comboStacking = true;
 	public static var gameplaySettings:Map<String, Dynamic> = [
+	//Custom Options Stuff Start
+	public static var iconBounceType:String = 'Golden Apple';
+	//Custom Options Stuff End
 		'scrollspeed' => 1.0,
 		'scrolltype' => 'multiplicative', 
 		// anyone reading this, amod is multiplicative speed mod, cmod is constant speed mod, and xmod is bpm based speed mod.
@@ -130,7 +133,9 @@ class ClientPrefs {
 		FlxG.save.data.pauseMusic = pauseMusic;
 		FlxG.save.data.checkForUpdates = checkForUpdates;
 		FlxG.save.data.comboStacking = comboStacking;
-	
+		//Custom Options Stuff Start
+		FlxG.save.data.iconBounceType = iconBounceType;
+		//Custom Options Stuff End
 		FlxG.save.flush();
 
 		var save:FlxSave = new FlxSave();
@@ -250,7 +255,11 @@ class ClientPrefs {
 				gameplaySettings.set(name, value);
 			}
 		}
-		
+		//Custom Options Stuff Start
+		if(FlxG.save.data.iconBounceType != null) {
+			iconBounceType = FlxG.save.data.iconBounceType;
+		}
+		//Custom Options Stuff End
 		// flixel automatically saves your volume!
 		if(FlxG.save.data.volume != null)
 		{

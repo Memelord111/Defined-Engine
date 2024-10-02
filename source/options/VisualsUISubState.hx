@@ -124,6 +124,15 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
+		//Custom Mod Options Start
+		var option:Option = new Option('Icon Bounce:',
+		"Which icon bounce would you like?",
+		'iconBounceType',
+		'string',
+		'Golden Apple',
+		['Golden Apple', 'Dave and Bambi', 'Old Psych', 'New Psych']);
+		addOption(option);
+		//Custom Mod Options End
 		super();
 	}
 
