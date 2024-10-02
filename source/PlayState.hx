@@ -27,7 +27,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.sound.FlxSound;
+import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -207,12 +207,6 @@ class PlayState extends MusicBeatState
 	public var instakillOnMiss:Bool = false;
 	public var cpuControlled:Bool = false;
 	public var practiceMode:Bool = false;
-	//Custom Stuff Start
-	var randomMode:Bool = false;
-	var flip:Bool = false;
-	var stairs:Bool = false;
-	var waves:Bool = false;
-	//Custom Stuff End
 
 	public var botplaySine:Float = 0;
 	public var botplayTxt:FlxText;
@@ -394,12 +388,6 @@ class PlayState extends MusicBeatState
 		instakillOnMiss = ClientPrefs.getGameplaySetting('instakill', false);
 		practiceMode = ClientPrefs.getGameplaySetting('practice', false);
 		cpuControlled = ClientPrefs.getGameplaySetting('botplay', false);
-		//Custom Stuff Start
-		randomMode = ClientPrefs.getGameplaySetting('randommode', false);
-		flip = ClientPrefs.getGameplaySetting('flip', false);
-		stairs = ClientPrefs.getGameplaySetting('stairmode', false);
-		waves = ClientPrefs.getGameplaySetting('wavemode', false);
-		//Custom Stuff End
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
@@ -1021,13 +1009,6 @@ class PlayState extends MusicBeatState
 			dialogueJson = DialogueBoxPsych.parseDialogue(file);
 		}
 
-		#if MODS_ALLOWED
-		var file:String = Paths.modsJson(songName + '/dialogue'); //Checks for json/Psych Engine dialogue in mod folder
-		if(dialogueJson == null && FileSystem.exists(file)) { // Only check if dialogue has not already been found
-			dialogueJson = DialogueBoxPsych.parseDialogue(file);
-		}
-		#end
-
 		var file:String = Paths.txt(songName + '/' + songName + 'Dialogue'); //Checks for vanilla/Senpai dialogue
 		if (OpenFlAssets.exists(file)) {
 			dialogue = CoolUtil.coolTextFile(file);
@@ -1048,7 +1029,7 @@ class PlayState extends MusicBeatState
 
 		var showTime:Bool = (ClientPrefs.timeBarType != 'Disabled');
 		timeTxt = new FlxText(STRUM_X + (FlxG.width / 2) - 248, 19, 400, "", 32);
-		timeTxt.setFormat(Paths.font("comic.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		timeTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		timeTxt.scrollFactor.set();
 		timeTxt.alpha = 0;
 		timeTxt.borderSize = 2;
@@ -1166,14 +1147,14 @@ class PlayState extends MusicBeatState
 		reloadHealthBarColors();
 
 		scoreTxt = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
-		scoreTxt.setFormat(Paths.font("comic.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.borderSize = 1.25;
 		scoreTxt.visible = !ClientPrefs.hideHud;
 		add(scoreTxt);
 
 		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
-		botplayTxt.setFormat(Paths.font("comic.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		botplayTxt.scrollFactor.set();
 		botplayTxt.borderSize = 1.25;
 		botplayTxt.visible = cpuControlled;
@@ -1354,8 +1335,7 @@ class PlayState extends MusicBeatState
 					tankIntro();
 
 				default:
-					if(dialogueJson != null) startDialogue(dialogueJson)
-					else startCountdown();
+					startCountdown();
 			}
 			seenCutscene = true;
 		}
@@ -2424,7 +2404,6 @@ class PlayState extends MusicBeatState
 	}
 
 	var debugNum:Int = 0;
-	var stair:Int = 0;
 	private var noteTypeMap:Map<String, Bool> = new Map<String, Bool>();
 	private var eventPushedMap:Map<String, Bool> = new Map<String, Bool>();
 	private function generateSong(dataPath:String):Void
@@ -2497,33 +2476,7 @@ class PlayState extends MusicBeatState
 			for (songNotes in section.sectionNotes)
 			{
 				var daStrumTime:Float = songNotes[0];
-				var daNoteData:Int = 0;
-				if (!randomMode && !flip && !stairs	&& !waves)
-				{
-				daNoteData = Std.int(songNotes[1] % 4);
-				}
-				if (randomMode || randomMode && flip || randomMode && flip && stairs || randomMode && flip && stairs && waves) { //gotta specify that random mode must at least be turned on for this to work
-				daNoteData = FlxG.random.int(0, 3);
-				}
-				if (flip && !stairs && !waves) {
-				daNoteData = Std.int(Math.abs((songNotes[1] % 4) - 3));
-				}
-				if (stairs && !waves) {
-				daNoteData = stair % 4;
-				stair++;
-				}
-				if (waves) {
-						switch (stair % 6)
-							{
-								case 0 | 1 | 2 | 3:
-									daNoteData = stair % 6;
-								case 4:
-									daNoteData = 2;
-								case 5:
-									daNoteData = 1;
-							}
-				stair++;
-				}
+				var daNoteData:Int = Std.int(songNotes[1] % 4);
 
 				var gottaHitNote:Bool = section.mustHitSection;
 
@@ -3095,35 +3048,6 @@ class PlayState extends MusicBeatState
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
 
-	if (ClientPrefs.iconBounceType == 'Old Psych') {
-		iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, CoolUtil.boundTo(1 - (elapsed * 30), 0, 1))));
-		iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, CoolUtil.boundTo(1 - (elapsed * 30), 0, 1))));
-		}
-		if (ClientPrefs.iconBounceType == 'Dave and Bambi') {
-		iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, 0.9 / playbackRate)),Std.int(FlxMath.lerp(150, iconP1.height, 0.9 / playbackRate)));
-		iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, 0.9 / playbackRate)),Std.int(FlxMath.lerp(150, iconP2.height, 0.9 / playbackRate)));
-		}
-		if (ClientPrefs.iconBounceType == 'New Psych') {
-		var mult:Float = FlxMath.lerp(1, iconP1.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
-		iconP1.scale.set(mult, mult);
-		iconP1.updateHitbox();
-		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
-		iconP2.scale.set(mult, mult);
-		iconP2.updateHitbox();
-		}
-		if (ClientPrefs.iconBounceType == 'VS Steve') {
-			var mult:Float = FlxMath.lerp(1, iconP1.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
-			iconP1.scale.set(mult, mult);
-			iconP1.updateHitbox();
-			var mult:Float = FlxMath.lerp(1, iconP2.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
-			iconP2.scale.set(mult, mult);
-			iconP2.updateHitbox();
-			}
-	
-		if (ClientPrefs.iconBounceType == 'Golden Apple') {
-		iconP1.centerOffsets();
-		iconP2.centerOffsets();
-		}
 		var mult:Float = FlxMath.lerp(1, iconP1.scale.x, CoolUtil.boundTo(1 - (elapsed * 9 * playbackRate), 0, 1));
 		iconP1.scale.set(mult, mult);
 		iconP1.updateHitbox();
@@ -3189,42 +3113,15 @@ class PlayState extends MusicBeatState
 					var curTime:Float = Conductor.songPosition - ClientPrefs.noteOffset;
 					if(curTime < 0) curTime = 0;
 					songPercent = (curTime / songLength);
-					var songDurationSeconds:Float = FlxMath.roundDecimal(songLength / 1000, 0);
 
 					var songCalc:Float = (songLength - curTime);
-					if(ClientPrefs.timeBarType == 'Time Elapsed' || ClientPrefs.timeBarType == 'Modern Time' || ClientPrefs.timeBarType == 'Song Name + Time') songCalc = curTime;
+					if(ClientPrefs.timeBarType == 'Time Elapsed') songCalc = curTime;
 
-					var secondsTotal:Int = 0;
-					secondsTotal = Math.floor(songCalc / 1000);
+					var secondsTotal:Int = Math.floor(songCalc / 1000);
 					if(secondsTotal < 0) secondsTotal = 0;
 
-					var hoursRemaining:Int = Math.floor(secondsTotal / 3600);
-					var minutesRemaining:Int = Math.floor(secondsTotal / 60) % 60;
-					var minutesRemainingShit:String = '' + minutesRemaining;
-					var secondsRemaining:String = '' + secondsTotal % 60;
-					if(secondsRemaining.length < 2) secondsRemaining = '0' + secondsRemaining; //let's see if the old time format works actually
-					//if (minutesRemaining == 60) minutesRemaining = 0; //reset the minutes to 0 every time it counts another hour
-					if (minutesRemainingShit.length < 2) minutesRemainingShit = '0' + minutesRemaining; 
-					//also, i wont add a day thing because there's no way someone can mod a song that's over 24 hours long into this engine
-					var hoursShown:Int = Math.floor(songDurationSeconds / 3600);
-					var minutesShown:Int = Math.floor(songDurationSeconds / 60) % 60;
-					var minutesShownShit:String = '' + minutesShown;
-					var secondsShown:String = '' + songDurationSeconds % 60;
-					if(secondsShown.length < 2) secondsShown = '0' + secondsShown; //let's see if the old time format works actually
-					if (minutesShownShit.length < 2) minutesShownShit = '0' + minutesShown;
-					if(ClientPrefs.timeBarType != 'Song Name' && songLength <= 3600000)
+					if(ClientPrefs.timeBarType != 'Song Name')
 						timeTxt.text = FlxStringUtil.formatTime(secondsTotal, false);
-
-					if(ClientPrefs.timeBarType != 'Song Name' && songLength >= 3600000)
-						timeTxt.text = hoursRemaining + ':' + minutesRemainingShit + ':' + secondsRemaining;
-						if(ClientPrefs.timeBarType == 'Modern Time' && songLength <= 3600000)
-							timeTxt.text = FlxStringUtil.formatTime(secondsTotal, false) + ' / ' + FlxStringUtil.formatTime(songLength / 1000, false);
-						if(ClientPrefs.timeBarType == 'Modern Time' && songLength >= 3600000)
-							timeTxt.text = hoursRemaining + ':' + minutesRemainingShit + ':' + secondsRemaining + ' / ' + hoursShown + ':' + minutesShownShit + ':' + secondsShown;
-						if(ClientPrefs.timeBarType == 'Song Name + Time' && songLength <= 3600000)
-							timeTxt.text = SONG.song + ' (' + FlxStringUtil.formatTime(secondsTotal, false) + ' / ' + FlxStringUtil.formatTime(songLength / 1000, false) + ')';
-						if(ClientPrefs.timeBarType == 'Song Name + Time' && songLength >= 3600000)
-							timeTxt.text = SONG.song + ' (' + hoursRemaining + ':' + minutesRemainingShit + ':' + secondsRemaining + ' / ' + hoursShown + ':' + minutesShownShit + ':' + secondsShown + ')';
 				}
 			}
 
@@ -5132,20 +5029,10 @@ class PlayState extends MusicBeatState
 		{
 			notes.sort(FlxSort.byY, ClientPrefs.downScroll ? FlxSort.ASCENDING : FlxSort.DESCENDING);
 		}
-		if (ClientPrefs.iconBounceType == 'Dave and Bambi') {
-		var funny:Float = Math.max(Math.min(healthBar.value,1.9),0.01);
-	
-		iconP2.setGraphicSize(Std.int(iconP2.width + (50 / funny)),Std.int(iconP2.height - (25 * funny)));
-		iconP1.setGraphicSize(Std.int(iconP1.width + (50 / ((2 - funny) + 0.1))),Std.int(iconP1.height - (25 * ((2 - funny) + 0.1))));
-		}
-		if (ClientPrefs.iconBounceType == 'Old Psych') {
-		iconP1.setGraphicSize(Std.int(iconP1.width + 30));
-		iconP2.setGraphicSize(Std.int(iconP2.width + 30));
-		}
-		if (ClientPrefs.iconBounceType == 'New Psych') {
+
 		iconP1.scale.set(1.2, 1.2);
 		iconP2.scale.set(1.2, 1.2);
-	}
+
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
 
@@ -5153,52 +5040,6 @@ class PlayState extends MusicBeatState
 		{
 			gf.dance();
 		}
-		if (curBeat % gfSpeed == 0 && ClientPrefs.iconBounceType == 'Golden Apple') {
-			curBeat % (gfSpeed * 2) == 0 * playbackRate ? {
-			iconP1.scale.set(1.1, 0.8);
-			iconP2.scale.set(1.1, 1.3);
-	
-			FlxTween.angle(iconP1, -15, 0, Conductor.crochet / 1300 / playbackRate, {ease: FlxEase.quadOut});
-			FlxTween.angle(iconP2, 15, 0, Conductor.crochet / 1300 / playbackRate, {ease: FlxEase.quadOut});
-			} : {
-			iconP1.scale.set(1.1, 1.3);
-			iconP2.scale.set(1.1, 0.8);
-	
-			FlxTween.angle(iconP2, -15, 0, Conductor.crochet / 1300 / playbackRate, {ease: FlxEase.quadOut});
-			FlxTween.angle(iconP1, 15, 0, Conductor.crochet / 1300 / playbackRate, {ease: FlxEase.quadOut});
-			}
-	
-			FlxTween.tween(iconP1, {'scale.x': 1, 'scale.y': 1}, Conductor.crochet / 1250 / playbackRate * gfSpeed, {ease: FlxEase.quadOut});
-			FlxTween.tween(iconP2, {'scale.x': 1, 'scale.y': 1}, Conductor.crochet / 1250 / playbackRate * gfSpeed, {ease: FlxEase.quadOut});
-	
-			iconP1.updateHitbox();
-			iconP2.updateHitbox();
-			}
-			if (ClientPrefs.iconBounceType == 'VS Steve') {
-			if (curBeat % gfSpeed == 0) 
-				{
-				curBeat % (gfSpeed * 2) == 0 ? 
-				{
-					iconP1.scale.set(1.1, 0.8);
-					iconP2.scale.set(1.1, 1.3);
-					//FlxTween.angle(iconP2, -15, 0, Conductor.crochet / 1300 * gfSpeed, {ease: FlxEase.quadOut});
-					//FlxTween.angle(iconP1, 15, 0, Conductor.crochet / 1300 * gfSpeed, {ease: FlxEase.quadOut});
-				} 
-				: 
-				{
-					iconP1.scale.set(1.1, 1.3);
-					iconP2.scale.set(1.1, 0.8);
-					FlxTween.angle(iconP1, -15, 0, Conductor.crochet / 1300 * gfSpeed, {ease: FlxEase.quadOut});
-					FlxTween.angle(iconP2, 15, 0, Conductor.crochet / 1300 * gfSpeed, {ease: FlxEase.quadOut});
-					
-				}
-				FlxTween.tween(iconP1, {'scale.x': 1, 'scale.y': 1}, Conductor.crochet / 1250 * gfSpeed, {ease: FlxEase.quadOut});
-				FlxTween.tween(iconP2, {'scale.x': 1, 'scale.y': 1}, Conductor.crochet / 1250 * gfSpeed, {ease: FlxEase.quadOut});
-				iconP1.updateHitbox();
-				iconP2.updateHitbox();
-			}
-			}
-
 		if (curBeat % boyfriend.danceEveryNumBeats == 0 && boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.stunned)
 		{
 			boyfriend.dance();
@@ -5207,7 +5048,7 @@ class PlayState extends MusicBeatState
 		{
 			dad.dance();
 		}
-		
+
 		switch (curStage)
 		{
 			case 'tank':
