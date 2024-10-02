@@ -55,6 +55,12 @@ class ClientPrefs {
 		'practice' => false,
 		'botplay' => false,
 		'opponentplay' => false
+		//Custom Gameplay Options Start
+		'randommode' => false,
+		'flip' => false,
+		'stairmode' => false,
+		'wavemode' => false
+		//Custom Gameplay Options End
 	];
 
 	public static var comboOffset:Array<Int> = [0, 0, 0, 0];
