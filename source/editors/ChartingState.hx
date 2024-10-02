@@ -1756,6 +1756,16 @@ class ChartingState extends MusicBeatState
 					changeNoteSustain(-Conductor.stepCrochet);
 				}
 			}
+						
+			
+			if (FlxG.keys.justPressed.BACKSPACE) {
+				//if(onMasterEditor) {
+					MusicBeatState.switchState(new editors.MasterEditorMenu());
+					FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				//}
+				FlxG.mouse.visible = false;
+				return;
+			}
 
 
 			if (FlxG.keys.justPressed.BACKSPACE) {
