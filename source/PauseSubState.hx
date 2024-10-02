@@ -306,7 +306,6 @@ class PauseSubState extends MusicBeatSubstate
 	{
 		pauseMusic.destroy();
 
-		super.destroy();
 	}
 
 	function changeSelection(change:Int = 0):Void
