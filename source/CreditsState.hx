@@ -85,8 +85,9 @@ class CreditsState extends MusicBeatState
 			['Memelord',		'Memelord',			'Co-Director, 2nd Charter And Source Coder',						'https://www.youtube.com/@memelord111alt',	'3890F2'],
 			['Jumpman872',		'Jumpman872',		'Main artist, with a pretty nice artstyle',							'https://www.youtube.com/@Jumpman872/videos',	'1E8200'],
 			[''],
-			['Ghost Engine']
-			['ghostkyle95',		'ghostkyle95',	"Made Ghost Engine",					'https://www.youtube.com/channel/UCqDfIH-f6_8R0axAtUvIX6g',	'F73838'],
+			['Ghost Engine'],
+			['ghostkyle95',		'ghostkyle95',	"Made Ghost Engine",	'https://www.youtube.com/channel/UCqDfIH-f6_8R0axAtUvIX6g',	'F73838'],
+			[''],
 			['Psych Engine Team'],
 			['Shadow Mario',		'shadowmario',		'Main Programmer of Psych Engine',								'https://twitter.com/Shadow_Mario_',	'444444'],
 			['RiverOaken',			'river',			'Main Artist/Animator of Psych Engine',							'https://twitter.com/RiverOaken',		'B42F71'],
