@@ -20,6 +20,7 @@ import lime.app.Application;
 import Achievements;
 import editors.MasterEditorMenu;
 import flixel.input.keyboard.FlxKey;
+import flixel.addons.display.FlxBackdrop; 
 
 using StringTools;
 
@@ -43,6 +44,7 @@ class MainMenuState extends MusicBeatState
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
 	var debugKeys:Array<FlxKey>;
+	var checker:FlxBackdrop; 
 
 	public static var firstStart:Bool = true;
 
@@ -98,6 +100,14 @@ class MainMenuState extends MusicBeatState
 		magenta.color = 0xFFfd719b;
 		add(magenta);
 		
+		checker = new FlxBackdrop(Paths.image('Grid_lmao'));
+		//checker.velocity.set(112, 110);
+		checker.updateHitbox();
+		checker.scrollFactor.set(0, 0);
+		checker.alpha = 1;
+		checker.screenCenter(X);
+		add(checker);
+
 		// magenta.scrollFactor.set();
 
 		menuItems = new FlxTypedGroup<FlxSprite>();
@@ -187,7 +197,8 @@ class MainMenuState extends MusicBeatState
 
 		var lerpVal:Float = CoolUtil.boundTo(elapsed * 7.5, 0, 1);
 		camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
-
+		checker.x = 0.16 / (ClientPrefs.framerate / 60);
+		checker.y -= 0.16 / (ClientPrefs.framerate / 60);
 		if (!selectedSomethin)
 		{
 			if (controls.UI_UP_P)
