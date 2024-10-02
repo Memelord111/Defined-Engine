@@ -382,6 +382,7 @@ class Paths
 		if(!currentTrackedSounds.exists(gottenPath))
 		#if MODS_ALLOWED
 			currentTrackedSounds.set(gottenPath, Sound.fromFile('./' + gottenPath));
+			//currentTrackedSounds.set(gottenPath, Sound.fromFile('/' + gottenPath));
 		#else
 		{
 			var folder:String = '';
