@@ -33,10 +33,10 @@ class ClientPrefs {
 	public static var pauseMusic:String = 'Tea Time';
 	public static var checkForUpdates:Bool = true;
 	public static var comboStacking = true;
+		//Custom Options Stuff Start
+		public static var iconBounceType:String = 'Golden Apple';
+		//Custom Options Stuff End
 	public static var gameplaySettings:Map<String, Dynamic> = [
-	//Custom Options Stuff Start
-	public static var iconBounceType:String = 'Golden Apple';
-	//Custom Options Stuff End
 		'scrollspeed' => 1.0,
 		'scrolltype' => 'multiplicative', 
 		// anyone reading this, amod is multiplicative speed mod, cmod is constant speed mod, and xmod is bpm based speed mod.
