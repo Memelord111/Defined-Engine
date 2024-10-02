@@ -1791,6 +1791,8 @@ class ChartingState extends MusicBeatState
 						&& FlxG.mouse.y < gridBG.y + gridBG.height)
 							if (!FlxG.keys.pressed.CONTROL) //stop crashing
 								addNote(); //allows you to draw notes by holding left click
+							updateGrid();
+							updateNoteUI();
 
 			if (FlxG.keys.justPressed.TAB)
 			{
@@ -2928,7 +2930,7 @@ class ChartingState extends MusicBeatState
 		updateGrid();
 	}
 
-	private function addNote(strum:Null<Float> = null, data:Null<Int> = null, type:Null<Int> = null):Void
+	private function addNote(strum:Null<Float> = null, data:Null<Int> = null, type:Null<Int> = null, ?gridUpdate:Bool = true):Void
 	{
 		//curUndoIndex++;
 		//var newsong = _song.notes;

@@ -5160,7 +5160,18 @@ class PlayState extends MusicBeatState
 		{
 			dad.dance();
 		}
-
+		if (nps > (1 / 2))
+			{
+			updateRatingCounter();
+			updateScore();
+			}
+			if (nps == 1)
+			{
+			new FlxTimer().start(0.01, function(_) {
+							updateScore();
+							updateRatingCounter();
+						});
+			}
 		switch (curStage)
 		{
 			case 'tank':
