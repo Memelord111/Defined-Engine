@@ -36,6 +36,10 @@ class ClientPrefs {
 		//Custom Options Stuff Start
 		public static var iconBounceType:String = 'Golden Apple';
 		public static var doubleGhost:Bool = true;
+		public static var mobileMidScroll:Bool = false;
+		public static var opponentLightStrum:Bool = true;
+		public static var botLightStrum:Bool = true;
+		public static var oppNoteAlpha:Float = 0.65;
 		//Custom Options Stuff End
 	public static var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
@@ -145,6 +149,10 @@ class ClientPrefs {
 		//Custom Options Stuff Start
 		FlxG.save.data.doubleGhost = doubleGhost;
 		FlxG.save.data.iconBounceType = iconBounceType;
+		FlxG.save.data.mobileMidScroll = mobileMidScroll;
+		FlxG.save.data.botLightStrum = botLightStrum;
+		FlxG.save.data.opponentLightStrum = opponentLightStrum;
+		FlxG.save.data.oppNoteAlpha = oppNoteAlpha;
 		//Custom Options Stuff End
 		FlxG.save.flush();
 
@@ -271,6 +279,18 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.doubleGhost != null) {
 			doubleGhost = FlxG.save.data.doubleGhost;
+		}
+		if(FlxG.save.data.mobileMidScroll != null) {
+			mobileMidScroll = FlxG.save.data.mobileMidScroll;
+		}
+		if(FlxG.save.data.oppNoteAlpha != null) {
+			oppNoteAlpha = FlxG.save.data.oppNoteAlpha;
+		}
+		if(FlxG.save.data.botLightStrum != null) {
+			botLightStrum = FlxG.save.data.botLightStrum;
+		}
+		if(FlxG.save.data.opponentLightStrum != null) {
+			opponentLightStrum = FlxG.save.data.opponentLightStrum;
 		}
 		//Custom Options Stuff End
 		// flixel automatically saves your volume!

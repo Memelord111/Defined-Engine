@@ -48,6 +48,35 @@ class EngineOptionsSubState extends BaseOptionsMenu
 		'bool',
 		true);
 	addOption(option);
+	var option:Option = new Option('Mobile Middlescroll',
+	"If checked, your notes and the opponent's notes get centered.",
+	'mobileMidScroll',
+	'bool',
+	false);
+	addOption(option);
+	var option:Option = new Option('Opponent Note Transparency: ',
+	"How visible do you want the opponent's notes to be when Middlescroll is enabled? \n(0% = invisible, 100% = fully visible)",
+	'oppNoteAlpha',
+	'percent',
+	0.65);
+	option.scrollSpeed = 1.8;
+	option.minValue = 0.0;
+	option.maxValue = 1;
+	option.changeValue = 0.01;
+	option.decimals = 2;
+	addOption(option);
+	var option:Option = new Option('Light Opponent Strums',
+	"If this is unchecked, the Opponent strums won't light up when the Opponent hits a note.",
+	'opponentLightStrum',
+	'bool',
+	true);
+	addOption(option);
+	var option:Option = new Option('Light Botplay Strums',
+	"If this is unchecked, the Player strums won't light when Botplay is active.",
+	'botLightStrum',
+	'bool',
+	true);
+	addOption(option);
 //Custom Mod Options End
 		super();
 	}

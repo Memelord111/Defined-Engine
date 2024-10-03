@@ -2154,15 +2154,20 @@ class PlayState extends MusicBeatState
 
 			generateStaticArrows(0);
 			generateStaticArrows(1);
-			for (i in 0...playerStrums.length) {
-				setOnLuas('defaultPlayerStrumX' + i, playerStrums.members[i].x);
-				setOnLuas('defaultPlayerStrumY' + i, playerStrums.members[i].y);
-			}
 			for (i in 0...opponentStrums.length) {
 				setOnLuas('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
 				setOnLuas('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
 				//if(ClientPrefs.middleScroll) opponentStrums.members[i].visible = false;
 			}
+			for (i in 0...playerStrums.length) {
+				setOnLuas('defaultPlayerStrumX' + i, playerStrums.members[i].x);
+				setOnLuas('defaultPlayerStrumY' + i, playerStrums.members[i].y);
+			}
+			/*for (i in 0...opponentStrums.length) {
+				setOnLuas('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
+				setOnLuas('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
+				//if(ClientPrefs.middleScroll) opponentStrums.members[i].visible = false;
+			}*/
 
 			startedCountdown = true;
 			Conductor.songPosition = -Conductor.crochet * 5;
@@ -2194,7 +2199,7 @@ class PlayState extends MusicBeatState
 				{
 					boyfriend.dance();
 				}
-				if(cpuControlled && opponentChart && dad.holdTimer > Conductor.stepCrochet * 0.001 * dad.singDuration && dad.animation.curAnim.name.startsWith('sing') && !dad.animation.curAnim.name.endsWith('miss')) {
+				if(cpuControlled && opponentChart && dad.holdTimer > Conductor.stepCrochet * 0.001 / playbackRate * dad.singDuration && dad.animation.curAnim.name.startsWith('sing') && !dad.animation.curAnim.name.endsWith('miss')) {
 					dad.dance();
 				}
 
@@ -2289,11 +2294,18 @@ class PlayState extends MusicBeatState
 				}
 
 				notes.forEachAlive(function(note:Note) {
-					if(ClientPrefs.opponentStrums || note.mustPress)
+					if(ClientPrefs.opponentStrums || !ClientPrefs.opponentStrums && ClientPrefs.mobileMidScroll || ClientPrefs.middleScroll || !note.mustPress)
+						{
+								note.alpha *= 0.35;
+						}
+					if(ClientPrefs.opponentStrums || !ClientPrefs.opponentStrums && ClientPrefs.mobileMidScroll || note.mustPress)
 					{
 						note.copyAlpha = false;
 						note.alpha = note.multAlpha;
 						if(ClientPrefs.middleScroll && !note.mustPress) {
+							note.alpha *= 0.35;
+						}
+						if(ClientPrefs.mobileMidScroll && !note.mustPress) {
 							note.alpha *= 0.35;
 						}
 					}
@@ -2568,6 +2580,10 @@ class PlayState extends MusicBeatState
 				{
 					gottaHitNote = !section.mustHitSection;
 				}
+				if (!gottaHitNote && ClientPrefs.mobileMidScroll)
+					{
+						songNotes[3] = 'Behind Note'; //hopefully this fixes an issue where the chart breaks 1 minute in
+					}
 
 				var oldNote:Note;
 				if (unspawnNotes.length > 0)
@@ -2620,6 +2636,10 @@ class PlayState extends MusicBeatState
 								sustainNote.x += FlxG.width / 2 + 25;
 							}
 						}
+						else if(ClientPrefs.mobileMidScroll)
+							{
+								sustainNote.x += FlxG.width / 2;
+							}
 					}
 				}
 
@@ -2635,7 +2655,10 @@ class PlayState extends MusicBeatState
 						swagNote.x += FlxG.width / 2 + 25;
 					}
 				}
-
+				else if(ClientPrefs.mobileMidScroll)
+					{
+						swagNote.x += FlxG.width / 2;
+					}
 				if(!noteTypeMap.exists(swagNote.noteType)) {
 					noteTypeMap.set(swagNote.noteType, true);
 				}
@@ -2782,10 +2805,11 @@ class PlayState extends MusicBeatState
 			if (player < 1)
 			{
 				if(!ClientPrefs.opponentStrums) targetAlpha = 0;
-				else if(ClientPrefs.middleScroll) targetAlpha = 0.35;
+				else if(ClientPrefs.middleScroll || ClientPrefs.mobileMidScroll) targetAlpha = ClientPrefs.oppNoteAlpha;
+				if (ClientPrefs.mobileMidScroll) opponentStrums.members[i].x == FlxG.width - 2; //make it so that you're unable to see the opponent's strums if you have mobile styled middlescroll on
 			}
 
-			var babyArrow:StrumNote = new StrumNote(ClientPrefs.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X, strumLine.y, i, player);
+			var babyArrow:StrumNote = new StrumNote(ClientPrefs.middleScroll || ClientPrefs.mobileMidScroll ? STRUM_X_MIDDLESCROLL : STRUM_X, strumLine.y, i, player);
 			babyArrow.downScroll = ClientPrefs.downScroll;
 			if (!isStoryMode && !skipArrowStartTween)
 			{
@@ -2800,8 +2824,8 @@ class PlayState extends MusicBeatState
 
 			if (player == 1)
 			{
-				if (!opponentChart || opponentChart && ClientPrefs.middleScroll) playerStrums.add(babyArrow);
-				else opponentStrums.add(babyArrow);
+				if (!opponentChart || opponentChart && ClientPrefs.middleScroll || opponentChart && ClientPrefs.mobileMidScroll || !opponentChart && ClientPrefs.mobileMidScroll) playerStrums.add(babyArrow);
+			else opponentStrums.add(babyArrow);
 			}
 			else
 			{
@@ -2812,7 +2836,12 @@ class PlayState extends MusicBeatState
 						babyArrow.x += FlxG.width / 2 + 25;
 					}
 				}
-				if (!opponentChart || opponentChart && ClientPrefs.middleScroll) opponentStrums.add(babyArrow);
+				if(ClientPrefs.mobileMidScroll)
+					{
+						babyArrow.x += FlxG.width / 2;
+					}
+					if (!opponentChart || opponentChart && ClientPrefs.mobileMidScroll || opponentChart && ClientPrefs.mobileMidScroll || !opponentChart && ClientPrefs.mobileMidScroll) opponentStrums.add(babyArrow);
+					else if (ClientPrefs.mobileMidScroll) insert(members.indexOf(playerStrums), babyArrow);
 				else playerStrums.add(babyArrow);
 			}
 
@@ -4913,9 +4942,7 @@ class PlayState extends MusicBeatState
 			else if(char != null && !opponentChart)
 
 			{
-				if (!ClientPrefs.doubleGhost) {
 					char.playAnim(animToPlay, true);
-					}
 				char.holdTimer = 0;
 				if (!note.isSustainNote && noteRows[note.mustPress?0:1][note.row].length > 1 && ClientPrefs.doubleGhost)
 					{
@@ -4945,9 +4972,7 @@ class PlayState extends MusicBeatState
 			}
 			if (opponentChart)
 				{
-					if (!ClientPrefs.doubleGhost) {
 					boyfriend.playAnim(animToPlay + note.animSuffix, true);
-					}
 					boyfriend.holdTimer = 0;
 					if (!note.isSustainNote && noteRows[note.mustPress?0:1][note.row].length > 1 && ClientPrefs.doubleGhost)
 						{
@@ -4978,10 +5003,13 @@ class PlayState extends MusicBeatState
 			vocals.volume = 1;
 
 		var time:Float = 0.15;
+		if (ClientPrefs.opponentLightStrum)
+			{
 		if(note.isSustainNote && !note.animation.curAnim.name.endsWith('end')) {
 			time += 0.15;
 		}
 		StrumPlayAnim(true, Std.int(Math.abs(note.noteData)), time);
+		}
 		note.hitByOpponent = true;
 
 		if (opponentDrain && health > 0.1) health -= note.hitHealth * hpDrainLevel;
@@ -5176,11 +5204,14 @@ class PlayState extends MusicBeatState
 			}
 
 			if(cpuControlled) {
+				if (ClientPrefs.botLightStrum)
+					{
 				var time:Float = 0.15;
 				if(note.isSustainNote && !note.animation.curAnim.name.endsWith('end')) {
 					time += 0.15;
 				}
 				StrumPlayAnim(false, Std.int(Math.abs(note.noteData)), time);
+			}
 			} else {
 				var spr = playerStrums.members[note.noteData];
 				if(spr != null)

@@ -146,6 +146,10 @@ class Note extends FlxSprite
 						missHealth = 0.3;
 					}
 					hitCausesMiss = true;
+					case 'Behind Note':
+						colorSwap.hue = 0;
+						colorSwap.saturation = -50;
+						colorSwap.brightness = 0;
 				case 'Alt Animation':
 					animSuffix = '-alt';
 				case 'No Animation':
