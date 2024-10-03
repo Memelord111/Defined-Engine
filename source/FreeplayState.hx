@@ -119,7 +119,6 @@ class FreeplayState extends MusicBeatState
 			songText.changeX = false;
 			grpSongs.add(songText);
 			
-			songText.snapToPosition();
 
 			Paths.currentModDirectory = songs[i].folder;
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);

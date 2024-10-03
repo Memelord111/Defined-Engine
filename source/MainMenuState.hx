@@ -103,8 +103,8 @@ class MainMenuState extends MusicBeatState
 		checker = new FlxBackdrop(Paths.image('Grid_lmao'));
 		//checker.velocity.set(112, 110);
 		checker.updateHitbox();
-		checker.scrollFactor.set(0, 0);
-		checker.alpha = 1;
+		checker.scrollFactor.set(0, 5);
+		checker.alpha = 0.7;
 		checker.screenCenter(X);
 		add(checker);
 
