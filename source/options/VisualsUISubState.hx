@@ -125,6 +125,12 @@ class VisualsUISubState extends BaseOptionsMenu
 		addOption(option);
 
 		//Custom Mod Options Start
+		var option:Option = new Option('Double Note Ghosts',
+		"If this is checked, hitting a Double Note will show an afterimage, just like in VS Impostor!",
+		'doubleGhost',
+		'bool',
+		true);
+		addOption(option);
 		var option:Option = new Option('Icon Bounce:',
 		"Which icon bounce would you like?",
 		'iconBounceType',
