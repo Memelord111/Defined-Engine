@@ -155,10 +155,12 @@ class PlayState extends MusicBeatState
 
 	public var vocals:FlxSound;
 
-	public var dadGhostTween:FlxTween = null;
-	public var bfGhostTween:FlxTween = null;
-	public var dadGhost:FlxSprite = null;
-	public var bfGhost:FlxSprite = null;
+	public var dadGhostTween:FlxTween;
+	public var bfGhostTween:FlxTween;
+	public var gfGhostTween:FlxTween;
+	public var dadGhost:FlxSprite;
+	public var bfGhost:FlxSprite;
+	public var gfGhost:FlxSprite;
 	public var dad:Character = null;
 	public var gf:Character = null;
 	public var boyfriend:Boyfriend = null;
@@ -863,9 +865,11 @@ class PlayState extends MusicBeatState
 
 		dadGhost = new FlxSprite();
 		bfGhost = new FlxSprite();
-		add(bfGhost);
-		add(dadGhost);
+		gfGhost = new FlxSprite();
 		add(gfGroup); //Needed for blammed lights
+		add(bfGhost);
+		add(gfGhost);
+		add(dadGhost);
 
 		// Shitty layering but whatev it works LOL
 		if (curStage == 'limo')
@@ -1004,14 +1008,16 @@ class PlayState extends MusicBeatState
 
 		dadGhost.visible = false;
 		dadGhost.antialiasing = true;
-		dadGhost.alpha = 0.6;
 		dadGhost.scale.copyFrom(dad.scale);
 		dadGhost.updateHitbox();
 		bfGhost.visible = false;
 		bfGhost.antialiasing = true;
-		bfGhost.alpha = 0.6;
 		bfGhost.scale.copyFrom(boyfriend.scale);
 		bfGhost.updateHitbox();
+		gfGhost.visible = false;
+		gfGhost.antialiasing = true;
+		gfGhost.scale.copyFrom(gf.scale);
+		gfGhost.updateHitbox();
 
 		var camPos:FlxPoint = new FlxPoint(girlfriendCameraOffset[0], girlfriendCameraOffset[1]);
 		if(gf != null)
@@ -4266,13 +4272,17 @@ class PlayState extends MusicBeatState
 			var ghost:FlxSprite = dadGhost;
 			var player:Character = dad;
 	
-			switch(char.toLowerCase().trim()){
-				case 'bf' | 'boyfriend' | '0':
-					ghost = bfGhost;
-					player = boyfriend;
-				case 'dad' | 'opponent' | '1':
-					ghost = dadGhost;
-					player = dad;
+			switch(char.toLowerCase().trim())
+			{
+				case 'bf':
+				ghost = bfGhost;
+				player = boyfriend;
+				case 'dad':
+				ghost = dadGhost;
+				player = dad;
+				case 'gf':
+				ghost = gfGhost;
+				player = gf;
 			}
 	
 									
@@ -4287,15 +4297,15 @@ class PlayState extends MusicBeatState
 			ghost.blend = HARDLIGHT;
 			ghost.alpha = 0.8;
 			ghost.visible = true;
-			if (FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms) //prevent it from zooming in too much
+			if (FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms)
 			{
-				FlxG.camera.zoom += 0.015;
-				camHUD.zoom += 0.03;
+					FlxG.camera.zoom += 0.015;
+					camHUD.zoom += 0.03;
 			}
 	
 			switch (char.toLowerCase().trim())
 			{
-				case 'bf' | 'boyfriend' | '0':
+				case 'bf':
 					if (bfGhostTween != null)
 						bfGhostTween.cancel();
 					ghost.color = FlxColor.fromRGB(boyfriend.healthColorArray[0] + 50, boyfriend.healthColorArray[1] + 50, boyfriend.healthColorArray[2] + 50);
@@ -4307,7 +4317,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 	
-				case 'dad' | 'opponent' | '1':
+					case 'dad':
 					if (dadGhostTween != null)
 						dadGhostTween.cancel();
 					ghost.color = FlxColor.fromRGB(dad.healthColorArray[0] + 50, dad.healthColorArray[1] + 50, dad.healthColorArray[2] + 50);
@@ -4318,9 +4328,19 @@ class PlayState extends MusicBeatState
 							dadGhostTween = null;
 						}
 					});
+					case 'gf':
+						if (gfGhostTween != null)
+							gfGhostTween.cancel();
+						ghost.color = FlxColor.fromRGB(gf.healthColorArray[0] + 50, gf.healthColorArray[1] + 50, gf.healthColorArray[2] + 50);
+						gfGhostTween = FlxTween.tween(gfGhost, {alpha: 0}, 0.75, {
+							ease: FlxEase.linear,
+							onComplete: function(twn:FlxTween)
+							{
+								gfGhostTween = null;
+							}
+						});
 			}
 		}
-
 
 	private function popUpScore(note:Note = null):Void
 	{
@@ -4833,26 +4853,60 @@ class PlayState extends MusicBeatState
 			var animToPlay:String = singAnimations[Std.int(Math.abs(note.noteData))] + altAnim;
 			if(note.gfNote) {
 				char = gf;
+				if (!note.isSustainNote && noteRows[note.mustPress?0:1][note.row].length > 1 && ClientPrefs.doubleGhost)
+					{
+						// potentially have jump anims?
+						var chord = noteRows[note.mustPress?0:1][note.row];
+						var animNote = chord[0];
+						var realAnim = singAnimations[Std.int(Math.abs(animNote.noteData))];
+						if (gf.mostRecentRow != note.row)
+						{
+							gf.playAnim(realAnim, true);
+						}
+	
+						// if (daNote != animNote)
+						// dad.playGhostAnim(chord.indexOf(daNote)-1, animToPlay, true);
+	
+						gf.mostRecentRow = note.row;
+						// dad.angle += 15; lmaooooo
+						doGhostAnim('gf', animToPlay);
+										gfGhost.color = FlxColor.fromRGB(gf.healthColorArray[0] + 50, gf.healthColorArray[1] + 50, gf.healthColorArray[2] + 50);
+										gfGhostTween = FlxTween.tween(gfGhost, {alpha: 0}, 0.75, {
+											ease: FlxEase.linear,
+											onComplete: function(twn:FlxTween)
+											{
+												gfGhostTween = null;
+											}
+										});
+						}
 			}
 
 			if(char != null)
 			{
+				if (!ClientPrefs.doubleGhost) {
+					char.playAnim(animToPlay, true);
+					}
 				char.holdTimer = 0;
 				if (!note.isSustainNote && noteRows[note.mustPress?0:1][note.row].length > 1 && ClientPrefs.doubleGhost)
 					{
 						// potentially have jump anims?
 						var chord = noteRows[note.mustPress?0:1][note.row];
 						var animNote = chord[0];
-						var realAnim = singAnimations[Std.int(Math.abs(animNote.noteData))] + altAnim;
+						var realAnim = singAnimations[Std.int(Math.abs(animNote.noteData))];
 						if (char.mostRecentRow != note.row)
 						{
-							char.playAnim(realAnim, true);
+										if(char.mostRecentRow != note.row)
+											doGhostAnim('char', animToPlay + altAnim);
+											dadGhost.color = FlxColor.fromRGB(dad.healthColorArray[0] + 50, dad.healthColorArray[1] + 50, dad.healthColorArray[2] + 50);
+											dadGhostTween = FlxTween.tween(dadGhost, {alpha: 0}, 0.75, {
+												ease: FlxEase.linear,
+												onComplete: function(twn:FlxTween)
+												{
+													dadGhostTween = null;
+												}
+											});
 						}
-						// if (daNote != animNote)
-						// dad.playGhostAnim(chord.indexOf(daNote)-1, animToPlay, true);
 						char.mostRecentRow = note.row;
-						// dad.angle += 15; lmaooooo
-						doGhostAnim('char', animToPlay);
 					}
 					else{
 						char.playAnim(animToPlay, true);
@@ -4936,6 +4990,36 @@ class PlayState extends MusicBeatState
 					{
 						gf.playAnim(animToPlay + note.animSuffix, true);
 						gf.holdTimer = 0;
+						if (!note.isSustainNote && noteRows[note.mustPress?0:1][note.row].length > 1 && ClientPrefs.doubleGhost)
+							{
+								// potentially have jump anims?
+								var chord = noteRows[note.mustPress?0:1][note.row];
+								var animNote = chord[0];
+								var realAnim = singAnimations[Std.int(Math.abs(animNote.noteData))];
+								if (gf.mostRecentRow != note.row)
+								{
+									gf.playAnim(realAnim, true);
+								}
+			
+								// if (daNote != animNote)
+								// dad.playGhostAnim(chord.indexOf(daNote)-1, animToPlay, true);
+			
+								gf.mostRecentRow = note.row;
+								// dad.angle += 15; lmaooooo
+								doGhostAnim('gf', animToPlay);
+						gfGhost.color = FlxColor.fromRGB(gf.healthColorArray[0] + 50, gf.healthColorArray[1] + 50, gf.healthColorArray[2] + 50);
+						gfGhostTween = FlxTween.tween(gfGhost, {alpha: 0}, 0.75, {
+							ease: FlxEase.linear,
+							onComplete: function(twn:FlxTween)
+							{
+								gfGhostTween = null;
+							}
+						});
+							}
+							else{
+								gf.playAnim(animToPlay + note.animSuffix, true);
+								// dad.angle = 0;
+							}
 					}
 				}
 				else
