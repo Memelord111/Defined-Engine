@@ -1,7 +1,6 @@
 package;
 
 import animateatlas.AtlasFrameMaker;
-import flixel.tweens.FlxEase;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.effects.FlxTrail;
@@ -47,7 +46,6 @@ typedef AnimArray = {
 
 class Character extends FlxSprite
 {
-	public var mostRecentRow:Int = 0;
 	public var animOffsets:Map<String, Array<Dynamic>>;
 	public var debugMode:Bool = false;
 
@@ -301,27 +299,16 @@ class Character extends FlxSprite
 
 			if (!isPlayer)
 			{
-				if (!PlayState.opponentChart || curCharacter.startsWith('gf')) {
-					if (animation.curAnim.name.startsWith('sing'))
-					{
-						holdTimer += elapsed;
-					}
+				if (animation.curAnim.name.startsWith('sing'))
+				{
+					holdTimer += elapsed;
+				}
 
-					if (holdTimer >= Conductor.stepCrochet * 0.001 * singDuration)
-						{
-							dance();
-							holdTimer = 0;
-						}
-					} else {
-						if (animation.curAnim.name.startsWith('sing'))
-						{
-							holdTimer += elapsed;
-						}
-						else
-							holdTimer = 0;
-						if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
-							dance();
-						}
+				if (holdTimer >= Conductor.stepCrochet * (0.0011 / (FlxG.sound.music != null ? FlxG.sound.music.pitch : 1)) * singDuration)
+				{
+					dance();
+					holdTimer = 0;
+				}
 			}
 
 			var name:String = getAnimationName();

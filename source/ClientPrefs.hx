@@ -34,7 +34,6 @@ class ClientPrefs {
 	public static var checkForUpdates:Bool = true;
 	public static var comboStacking = true;
 		//Custom Options Stuff Start
-		public static var doubleGhost:Bool = true;
 		public static var iconBounceType:String = 'Golden Apple';
 		//Custom Options Stuff End
 	public static var gameplaySettings:Map<String, Dynamic> = [
@@ -55,14 +54,12 @@ class ClientPrefs {
 		'instakill' => false,
 		'practice' => false,
 		'botplay' => false,
+		'opponentplay' => false,
 		//Custom Gameplay Options Start
 		'randommode' => false,
 		'flip' => false,
 		'stairmode' => false,
-		'wavemode' => false,
-		'opponentplay' => false,
-		'opponentdrain' => false,
-		'drainlevel' => 1
+		'wavemode' => false
 		//Custom Gameplay Options End
 	];
 
@@ -143,7 +140,6 @@ class ClientPrefs {
 		FlxG.save.data.checkForUpdates = checkForUpdates;
 		FlxG.save.data.comboStacking = comboStacking;
 		//Custom Options Stuff Start
-		FlxG.save.data.doubleGhost = doubleGhost;
 		FlxG.save.data.iconBounceType = iconBounceType;
 		//Custom Options Stuff End
 		FlxG.save.flush();
@@ -266,9 +262,6 @@ class ClientPrefs {
 			}
 		}
 		//Custom Options Stuff Start
-		if(FlxG.save.data.doubleGhost != null) {
-			doubleGhost = FlxG.save.data.doubleGhost;
-		}
 		if(FlxG.save.data.iconBounceType != null) {
 			iconBounceType = FlxG.save.data.iconBounceType;
 		}
