@@ -55,10 +55,8 @@ class ClientPrefs {
 		'instakill' => false,
 		'practice' => false,
 		'botplay' => false,
-		//Custom Gameplay Options Start
 		'opponentplay' => false,
-		'opponentdrain' => false,
-		'drainlevel' => 1,
+		//Custom Gameplay Options Start
 		'randommode' => false,
 		'flip' => false,
 		'stairmode' => false,
