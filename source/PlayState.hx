@@ -3212,14 +3212,13 @@ class PlayState extends MusicBeatState
 		
 		/*
 		if (healthBar.percent < 20)
-			iconP1.animation.curAnim.curFrame = 1;
+			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 1;
 		else
-			iconP1.animation.curAnim.curFrame = 0;
-
+			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 0;
 		if (healthBar.percent > 80)
-			iconP2.animation.curAnim.curFrame = 1;
+			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 1;
 		else
-			iconP2.animation.curAnim.curFrame = 0;
+			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 0;
 		*/
 		
 		if (FlxG.keys.anyJustPressed(debugKeysCharacter) && !endingSong && !inCutscene) {
