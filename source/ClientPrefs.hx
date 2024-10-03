@@ -57,6 +57,9 @@ class ClientPrefs {
 		'botplay' => false,
 		'opponentplay' => false,
 		//Custom Gameplay Options Start
+		'opponentplay' => false,
+		'opponentdrain' => false,
+		'drainlevel' => 1,
 		'randommode' => false,
 		'flip' => false,
 		'stairmode' => false,
