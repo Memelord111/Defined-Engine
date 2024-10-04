@@ -101,11 +101,10 @@ class MainMenuState extends MusicBeatState
 		add(magenta);
 		
 		checker = new FlxBackdrop(Paths.image('Grid_lmao'));
-		//checker.velocity.set(112, 110);
+		checker.velocity.set(12, 110);
 		checker.updateHitbox();
-		checker.scrollFactor.set(0, 5);
+		checker.scrollFactor.set(0, 2);
 		checker.alpha = 0.7;
-		checker.screenCenter(X);
 		add(checker);
 
 		// magenta.scrollFactor.set();
@@ -197,7 +196,7 @@ class MainMenuState extends MusicBeatState
 
 		var lerpVal:Float = CoolUtil.boundTo(elapsed * 7.5, 0, 1);
 		camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
-		checker.x = 0.16 / (ClientPrefs.framerate / 60);
+		checker.x = 0.8 / (ClientPrefs.framerate / 60);
 		checker.y -= 0.16 / (ClientPrefs.framerate / 60);
 		if (!selectedSomethin)
 		{
