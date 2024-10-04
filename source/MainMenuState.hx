@@ -77,12 +77,13 @@ class MainMenuState extends MusicBeatState
 		persistentUpdate = persistentDraw = true;
 
 		var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
-		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
+		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
 		bg.scrollFactor.set(0, yScroll);
 		bg.setGraphicSize(Std.int(bg.width * 1.175));
 		bg.updateHitbox();
 		bg.screenCenter();
 		bg.antialiasing = ClientPrefs.globalAntialiasing;
+		bg.color = 0xff01208f;
 		add(bg);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
@@ -97,14 +98,14 @@ class MainMenuState extends MusicBeatState
 		magenta.screenCenter();
 		magenta.visible = false;
 		magenta.antialiasing = ClientPrefs.globalAntialiasing;
-		magenta.color = 0xFFfd719b;
+		magenta.color = 0xff01621b;
 		add(magenta);
 		
 		checker = new FlxBackdrop(Paths.image('Grid_lmao'));
 		checker.velocity.set(12, 110);
 		checker.updateHitbox();
 		checker.scrollFactor.set(0, 2);
-		checker.alpha = 0.7;
+		checker.alpha = 0.5;
 		add(checker);
 
 		// magenta.scrollFactor.set();
