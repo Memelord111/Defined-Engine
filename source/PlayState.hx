@@ -543,32 +543,6 @@ class PlayState extends MusicBeatState
 
 		switch (curStage)
 		{
-			case 'HouseDay(2.5)': //Dave Week
-			var bg:BGSprite = new BGSprite('dave/sky', -600, -200, 0.2, 0.2);
-			add(bg);
-
-			var hills:BGSprite = new BGSprite('dave/hills', -225, -125, 0.5, 0.5);
-			hills.setGraphicSize(Std.int(hills.width * 1.25));
-			hills.updateHitbox();
-			add(hills);
-
-			var gate:BGSprite = new BGSprite('dave/gate', -226, -125, 0.9, 0.9);
-			gate.setGraphicSize(Std.int(gate.width * 1.2));
-			gate.updateHitbox();
-			add(gate);
-
-			var grass:BGSprite = new BGSprite('dave/grass', -225, -125, 0.9, 0.9);
-			grass.setGraphicSize(Std.int(grass.width * 1.2));
-			grass.updateHitbox();
-			add(grass);
-
-			var insanityRed:BGSprite = new BGSprite('dave/redsky_insanity', 0, 0, 1, 1);
-			insanityRed.antialiasing = true;
-			insanityRed.scrollFactor.set(0.6, 0.6);
-			insanityRed.active = true;
-			insanityRed.visible = false;
-			add(insanityRed);
-
 			case 'stage': //Week 1
 				var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
 				add(bg);
