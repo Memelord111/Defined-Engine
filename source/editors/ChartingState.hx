@@ -30,7 +30,7 @@ import flixel.group.FlxSpriteGroup;
 import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
-import flixel.sound.FlxSound;
+import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -91,7 +91,9 @@ class ChartingState extends MusicBeatState
 		['Screen Shake', "Value 1: Camera shake\nValue 2: HUD shake\n\nEvery value works as the following example: \"1, 0.05\".\nThe first number (1) is the duration.\nThe second number (0.05) is the intensity."],
 		['Change Character', "Value 1: Character to change (Dad, BF, GF)\nValue 2: New character's name"],
 		['Change Scroll Speed', "Value 1: Scroll Speed Multiplier (1 is default)\nValue 2: Time it takes to change fully in seconds."],
-		['Set Property', "Value 1: Variable name\nValue 2: New value"]
+		['Set Property', "Value 1: Variable name\nValue 2: New value"],
+		['Thunderstorm type black screen', "adds a thunderstom from the shaggy mod type black screen\nValue 1: (0: Turn off, 1: turn on)"],
+		['Quick note spin', "Does a quick note spin"]
 	];
 
 	var _file:FileReference;

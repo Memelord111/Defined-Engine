@@ -240,6 +240,8 @@ class PlayState extends MusicBeatState
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 	var dialogueJson:DialogueFile = null;
 
+	var blackScreendeez:FlxSprite;
+
 	var dadbattleBlack:BGSprite;
 	var dadbattleLight:BGSprite;
 	var dadbattleSmokes:FlxSpriteGroup;
@@ -282,6 +284,7 @@ class PlayState extends MusicBeatState
 	var tankGround:BGSprite;
 	var tankmanRun:FlxTypedGroup<TankmenBG>;
 	var foregroundSprites:FlxTypedGroup<BGSprite>;
+	
 
 	public var songScore:Int = 0;
 	public var songHits:Int = 0;
@@ -438,6 +441,11 @@ class PlayState extends MusicBeatState
 
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
+
+		blackScreendeez = new FlxSprite(-120, -120).makeGraphic(Std.int(FlxG.width * 100), Std.int(FlxG.height * 150), FlxColor.BLACK);
+		blackScreendeez.scrollFactor.set();
+		blackScreendeez.alpha = 0;
+		add(blackScreendeez);
 
 		#if desktop
 		storyDifficultyText = CoolUtil.difficulties[storyDifficulty];
@@ -1216,6 +1224,7 @@ class PlayState extends MusicBeatState
 			botplayTxt.y = timeBarBG.y - 78;
 		}
 
+		blackScreendeez.cameras = [camHUD];
 		strumLineNotes.cameras = [camHUD];
 		grpNoteSplashes.cameras = [camHUD];
 		notes.cameras = [camHUD];
@@ -1531,6 +1540,16 @@ class PlayState extends MusicBeatState
 		noteKillOffset = 350 / songSpeed;
 		return value;
 	}
+
+	static public function quickSpin(sprite)
+		{
+			FlxTween.angle(sprite, 0, 360, 0.5, {
+				type: FlxTween.ONESHOT,
+				ease: FlxEase.quadInOut,
+				startDelay: 0,
+				loopDelay: 0
+			});
+		}
 
 	function set_playbackRate(value:Float):Float
 	{
@@ -2290,6 +2309,10 @@ class PlayState extends MusicBeatState
 							}
 						});
 						FlxG.sound.play(Paths.sound('introGo' + introSoundsSuffix), 0.6);
+						strumLineNotes.forEach(function(note)
+							{
+								quickSpin(note);
+							});
 					case 4:
 				}
 
@@ -4007,6 +4030,20 @@ class PlayState extends MusicBeatState
 				} else {
 					FunkinLua.setVarInArray(this, value1, value2);
 				}
+				case 'Quick note spin':
+					strumLineNotes.forEach(function(note)
+						{
+							quickSpin(note);
+						});
+						case 'Thunderstorm type black screen':
+							var ballsId:Int = Std.parseInt(value1);
+							switch (ballsId)
+							{
+								case 0: 
+									FlxTween.tween(blackScreendeez, {alpha: 0}, Conductor.stepCrochet / 500);
+								case 1:
+									FlxTween.tween(blackScreendeez, {alpha: 0.35}, Conductor.stepCrochet / 500);
+							}
 		}
 		callOnLuas('onEvent', [eventName, value1, value2]);
 	}
