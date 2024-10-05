@@ -562,7 +562,7 @@ class PlayState extends MusicBeatState
 			grass.updateHitbox();
 			add(grass);
 
-			insanityRed.loadGraphic(Paths.image('dave/redsky_insanity'));
+			var insanityRed:BGSprite = new BGSprite('dave/redsky_insanity', 0, 0, 1, 1);
 			insanityRed.antialiasing = true;
 			insanityRed.scrollFactor.set(0.6, 0.6);
 			insanityRed.active = true;
