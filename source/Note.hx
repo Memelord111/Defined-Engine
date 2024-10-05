@@ -157,6 +157,10 @@ class Note extends FlxSprite
 					noMissAnimation = true;
 				case 'GF Sing':
 					gfNote = true;
+				case 'Phone Note':
+					reloadNote('PHONE');
+				case 'phone-alt':
+					animSuffix = '-alt';
 			}
 			noteType = value;
 		}

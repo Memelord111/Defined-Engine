@@ -4926,6 +4926,11 @@ class PlayState extends MusicBeatState
 
 		var char:Character = dad;
 		if(opponentChart) char = boyfriend;
+		if(note.noteType == 'Phone Note' && char.animOffsets.exists('pre-attack')) {
+			char.playAnim('pre-attack', true);
+			char.specialAnim = true;
+			char.heyTimer = 0.6;
+		} else
 		if(note.noteType == 'Hey!' && char.animOffsets.exists('hey')) {
 			char.playAnim('hey', true);
 			char.specialAnim = true;
@@ -5228,6 +5233,12 @@ class PlayState extends MusicBeatState
 				if(note.noteType == 'Hey!') {
 					if(char.animOffsets.exists('hey')) {
 						char.playAnim('hey', true);
+						char.specialAnim = true;
+						char.heyTimer = 0.6;
+					}
+
+					if(note.noteType == 'Phone Note' && char.animOffsets.exists('pre-attack')) {
+						char.playAnim('pre-attack', true);
 						char.specialAnim = true;
 						char.heyTimer = 0.6;
 					}
