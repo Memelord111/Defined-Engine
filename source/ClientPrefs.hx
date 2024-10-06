@@ -40,6 +40,8 @@ class ClientPrefs {
 		public static var opponentLightStrum:Bool = true;
 		public static var botLightStrum:Bool = true;
 		public static var oppNoteAlpha:Float = 0.65;
+		public static var laneunderlay:Bool = false;
+		public static var laneTransparency:Float = 0.5;
 		//Custom Options Stuff End
 	public static var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
@@ -153,6 +155,8 @@ class ClientPrefs {
 		FlxG.save.data.botLightStrum = botLightStrum;
 		FlxG.save.data.opponentLightStrum = opponentLightStrum;
 		FlxG.save.data.oppNoteAlpha = oppNoteAlpha;
+		FlxG.save.data.laneunderlay = laneunderlay;
+		FlxG.save.data.laneTransparency = laneTransparency;
 		//Custom Options Stuff End
 		FlxG.save.flush();
 
@@ -291,6 +295,12 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.opponentLightStrum != null) {
 			opponentLightStrum = FlxG.save.data.opponentLightStrum;
+		}
+		if(FlxG.save.data.laneunderlay != null) {
+			laneunderlay = FlxG.save.data.laneunderlay;
+		}
+		if(FlxG.save.data.laneTransparency != null) {
+			laneTransparency = FlxG.save.data.laneTransparency;
 		}
 		//Custom Options Stuff End
 		// flixel automatically saves your volume!
