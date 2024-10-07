@@ -145,11 +145,7 @@ class FreeplayState extends MusicBeatState
 		scoreText.x = 20;
 
 		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 66, 0xFF000000);
-<<<<<<< HEAD
 		scoreBG.alpha = 0.5;
-=======
-		scoreBG.alpha = 0.6;
->>>>>>> parent of f438be9 (ok?)
 		add(scoreBG);
 
 		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
