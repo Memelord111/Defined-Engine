@@ -1,43 +1,6 @@
 package;
 
-#if desktop
-import Discord.DiscordClient;
-import sys.thread.Thread;
-#end
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.FlxState;
-import flixel.input.keyboard.FlxKey;
-import flixel.addons.display.FlxGridOverlay;
-import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
-import flixel.addons.transition.FlxTransitionableState;
-import flixel.addons.transition.TransitionData;
-import haxe.Json;
-import openfl.display.Bitmap;
-import openfl.display.BitmapData;
-#if MODS_ALLOWED
-import sys.FileSystem;
-import sys.io.File;
-#end
 import options.GraphicsSettingsSubState;
-//import flixel.graphics.FlxGraphic;
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.graphics.frames.FlxFrame;
-import flixel.group.FlxGroup;
-import flixel.input.gamepad.FlxGamepad;
-import flixel.math.FlxMath;
-import flixel.math.FlxPoint;
-import flixel.math.FlxRect;
-import flixel.system.FlxSound;
-import flixel.system.ui.FlxSoundTray;
-import flixel.text.FlxText;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxColor;
-import flixel.util.FlxTimer;
-import flixel.util.FlxGradient;
-import lime.app.Application;
-import openfl.Assets;
 
 using StringTools;
 typedef TitleData =
@@ -61,7 +24,6 @@ class TitleState extends MusicBeatState
 	public static var initialized:Bool = false;
 
 	var blackScreen:FlxSprite;
-	var gradientBar:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, 1, 0xFF0F5FFF);
 	var credGroup:FlxGroup;
 	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
@@ -72,8 +34,6 @@ class TitleState extends MusicBeatState
 
 	var curWacky:Array<String> = [];
 
-	var Timer:Float = 0;
-
 	var wackyImage:FlxSprite;
 
 	#if TITLE_SCREEN_EASTER_EGG
@@ -83,8 +43,6 @@ class TitleState extends MusicBeatState
 	var allowedKeys:String = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 	var easterEggKeysBuffer:String = '';
 	#end
-
-	private var doTheFunny:Bool = false;
 
 	var mustUpdate:Bool = false;
 
@@ -450,12 +408,6 @@ class TitleState extends MusicBeatState
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
 
-		Timer += 1;
-		gradientBar.scale.y += Math.sin(Timer / 10) * 0.001;
-		gradientBar.updateHitbox();
-		gradientBar.y = FlxG.height - gradientBar.height;
-		// gradientBar = FlxGradient.createGradientFlxSprite(Math.round(FlxG.width), Math.round(gradientBar.height), [0x00ff0000, 0xaaAE59E4, 0xff19ECFF], 1, 90, true);
-
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
 
 		#if mobile
@@ -482,7 +434,7 @@ class TitleState extends MusicBeatState
 		}
 		
 		if (newTitle) {
-			titleTimer += CoolUtil.boundTo(elapsed, 0, 1);
+			titleTimer += FlxMath.bound(elapsed, 0, 1);
 			if (titleTimer > 2) titleTimer -= 2;
 		}
 
@@ -515,11 +467,15 @@ class TitleState extends MusicBeatState
 				transitioning = true;
 				// FlxG.sound.music.stop();
 
-				new FlxTimer().start(0.1, function(tmr:FlxTimer)
-					{
-						MusicBeatState.switchState(new WarningState());
-						closedState = true;
-					});
+				new FlxTimer().start(1, function(tmr:FlxTimer)
+				{
+					if (mustUpdate) {
+						MusicBeatState.switchState(new OutdatedState());
+					} else {
+						MusicBeatState.switchState(new MainMenuState());
+					}
+					closedState = true;
+				});
 				// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 			}
 			#if TITLE_SCREEN_EASTER_EGG
@@ -579,10 +535,6 @@ class TitleState extends MusicBeatState
 			skipIntro();
 		}
 
-		if (doTheFunny) {
-	    	FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
-		}
-
 		if(swagShader != null)
 		{
 			if(controls.UI_LEFT) swagShader.hue -= elapsed * 0.1;
@@ -631,10 +583,6 @@ class TitleState extends MusicBeatState
 	override function beatHit()
 	{
 		super.beatHit();
-
-		if(doTheFunny) { 
-	    	FlxG.camera.zoom += 0.03;
-		}
 
 		if(logoBl != null)
 			logoBl.animation.play('bump', true);
@@ -726,16 +674,6 @@ class TitleState extends MusicBeatState
 	{
 		if (!skippedIntro)
 		{
-
-			doTheFunny = true;
-
-			gradientBar = FlxGradient.createGradientFlxSprite(Math.round(FlxG.width), 512, [0x00, 0x553D0468, 0xAA0F5FFF], 1, 90, true);
-	    	gradientBar.y = FlxG.height - gradientBar.height;
-	     	gradientBar.scale.y = 0;
-	    	gradientBar.updateHitbox();
-	    	add(gradientBar);
-	     	FlxTween.tween(gradientBar, {'scale.y': 1.3}, 4, {ease: FlxEase.quadInOut});
-
 			if (playJingle) //Ignore deez
 			{
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
