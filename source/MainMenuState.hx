@@ -78,7 +78,7 @@ class MainMenuState extends MusicBeatState
 
 		var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
 		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
-		bg.scrollFactor.set();
+		bg.scrollFactor.set(0, yScroll);
 		bg.setGraphicSize(Std.int(bg.width * 1.175));
 		bg.updateHitbox();
 		bg.screenCenter();
@@ -92,7 +92,7 @@ class MainMenuState extends MusicBeatState
 		add(camFollowPos);
 
 		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
-		magenta.scrollFactor.set();
+		magenta.scrollFactor.set(0, yScroll);
 		magenta.setGraphicSize(Std.int(magenta.width * 1.175));
 		magenta.updateHitbox();
 		magenta.screenCenter();
@@ -104,7 +104,7 @@ class MainMenuState extends MusicBeatState
 		checker = new FlxBackdrop(Paths.image('Grid_lmao'));
 		checker.velocity.set(12, 110);
 		checker.updateHitbox();
-		checker.scrollFactor.set();
+		checker.scrollFactor.set(0, 2);
 		checker.alpha = 0.5;
 		add(checker);
 
@@ -195,7 +195,7 @@ class MainMenuState extends MusicBeatState
 			if(FreeplayState.vocals != null) FreeplayState.vocals.volume += 0.5 * elapsed;
 		}
 
-		var lerpVal:Float = FlxMath.bound(elapsed * 7.5, 0, 1);
+		var lerpVal:Float = CoolUtil.boundTo(elapsed * 7.5, 0, 1);
 		camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
 		checker.x = 0.8 / (ClientPrefs.framerate / 60);
 		checker.y -= 0.16 / (ClientPrefs.framerate / 60);
