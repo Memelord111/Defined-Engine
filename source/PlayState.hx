@@ -214,6 +214,10 @@ class PlayState extends MusicBeatState
 	public static var changedDifficulty:Bool = false;
 	public static var chartingMode:Bool = false;
 
+	//character editor
+	public static var characteroverride:String = "none";
+	public static var formoverride:String = null;
+
 	//Gameplay settings
 	public var opponentDrain:Bool = false;
 	public static var opponentChart:Bool = false;
