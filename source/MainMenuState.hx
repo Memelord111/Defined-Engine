@@ -1,5 +1,6 @@
 package;
 
+import options.OptionsState;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -49,6 +50,23 @@ class MainMenuState extends MusicBeatState
 	public static var firstStart:Bool = true;
 
 	public static var finishedFunnyMove:Bool = false;
+
+	public static var bgPaths:Array<String> = 
+	[
+		'backgrounds/SUSSUS AMOGUS',
+		'backgrounds/SwagnotrllyTheMod',
+		'backgrounds/Olyantwo',
+		'backgrounds/morie',
+		'backgrounds/mantis',
+		'backgrounds/mamakotomi',
+		'backgrounds/T5mpler'
+	];
+
+	public static function randomizeBG():flixel.system.FlxAssets.FlxGraphicAsset
+	{
+		var chance:Int = FlxG.random.int(0, bgPaths.length - 1);
+		return Paths.image(bgPaths[chance]);
+	}
 
 	override function create()
 	{
@@ -101,12 +119,12 @@ class MainMenuState extends MusicBeatState
 		magenta.color = 0xff01621b;
 		add(magenta);
 		
-		checker = new FlxBackdrop(Paths.image('Grid_lmao'));
+	/*	checker = new FlxBackdrop(Paths.image('Grid_lmao'));
 		checker.velocity.set(12, 110);
 		checker.updateHitbox();
 		checker.scrollFactor.set(0, 2);
 		checker.alpha = 0.5;
-		add(checker);
+		add(checker);*/
 
 		// magenta.scrollFactor.set();
 
@@ -197,8 +215,8 @@ class MainMenuState extends MusicBeatState
 
 		var lerpVal:Float = CoolUtil.boundTo(elapsed * 7.5, 0, 1);
 		camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
-		checker.x = 0.8 / (ClientPrefs.framerate / 60);
-		checker.y -= 0.16 / (ClientPrefs.framerate / 60);
+	/*	checker.x = 0.8 / (ClientPrefs.framerate / 60);
+		checker.y -= 0.16 / (ClientPrefs.framerate / 60);*/
 		if (!selectedSomethin)
 		{
 			if (controls.UI_UP_P)
@@ -233,6 +251,8 @@ class MainMenuState extends MusicBeatState
 
 					if(ClientPrefs.flashing) FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
+					FlxTween.tween(FlxG.camera, {zoom:1.35}, 1.45, {ease: FlxEase.expoIn});
+
 					menuItems.forEach(function(spr:FlxSprite)
 					{
 						if (curSelected != spr.ID)
@@ -256,7 +276,7 @@ class MainMenuState extends MusicBeatState
 									case 'story_mode':
 										MusicBeatState.switchState(new StoryMenuState());
 									case 'freeplay':
-										MusicBeatState.switchState(new FreeplayState());
+										MusicBeatState.switchState(new CategoryState());
 									#if MODS_ALLOWED
 									case 'mods':
 										MusicBeatState.switchState(new ModsMenuState());
@@ -266,7 +286,7 @@ class MainMenuState extends MusicBeatState
 									case 'credits':
 										MusicBeatState.switchState(new CreditsState());
 									case 'options':
-										LoadingState.loadAndSwitchState(new options.OptionsState());
+										LoadingState.loadAndSwitchState(new OptionsState());
 								}
 							});
 						}
