@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Dave and Bambi Definitive Edition:Redefined" file="Redefined" packageName="com.shadowmario.psychengine" package="com.shadowmario.psychengine" main="Main" version="Demo 1.0" company="Redefined Team" />
+	<app title="Dave and Bambi Definitive Edition Redefined" file="Redefined" packageName="com.shadowmario.psychengine" package="com.shadowmario.psychengine" main="Main" version="Demo 1.0" company="Redefined Team" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
