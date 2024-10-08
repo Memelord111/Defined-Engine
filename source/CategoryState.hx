@@ -111,12 +111,12 @@ class CategoryState extends MusicBeatState
 	{
 		switch (AllPossibleSongs[CurrentPack].toLowerCase())
 		{
-			case 'main':
+			case 'dave':
 				FlxG.switchState(new FreeplayState());
-				categorySelected = 'main';
-			case 'extra':
+				categorySelected = 'dave';
+			case 'extras':
 				FlxG.switchState(new FreeplayState());
-				categorySelected = 'extra';
+				categorySelected = 'extras';
 		}
 	}
 
