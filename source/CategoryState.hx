@@ -133,7 +133,6 @@ class CategoryState extends MusicBeatState
 	}
 	override function update(elapsed:Float)
 	{
-
 		if (!InMainFreeplayState) 
 			{
 			if (!loadingCategory)
@@ -187,12 +186,6 @@ class CategoryState extends MusicBeatState
 		}
 }
 
-
-		
-
-
-
-
 class SongMetadata
 {
 	public var songName:String = "";
@@ -200,16 +193,14 @@ class SongMetadata
 	public var songCharacter:String = "";
 	public var color:Int = -7179779;
 	public var folder:String = "";
-	public var blocked:Bool = false;
 
-	public function new(song:String, week:Int, songCharacter:String, color:Int, blocked:Bool)
+	public function new(song:String, week:Int, songCharacter:String, color:Int)
 	{
 		this.songName = song;
 		this.week = week;
 		this.songCharacter = songCharacter;
 		this.color = color;
 		this.folder = Paths.currentModDirectory;
-		this.blocked = blocked;
 		if(this.folder == null) this.folder = '';
 	}
 }
