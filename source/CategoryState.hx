@@ -42,7 +42,7 @@ class CategoryState extends MusicBeatState
 	private var camFollow:FlxObject;
 	private static var prevCamFollow:FlxObject;
 
-	private var AllPossibleSongs:Array<String> = ["dave", "extras"];
+	private var AllPossibleSongs:Array<String> = ["dave", "extras", "joke"];
 
 	private var CurrentPack:Int = 0;
 
@@ -117,6 +117,9 @@ class CategoryState extends MusicBeatState
 			case 'extras':
 				FlxG.switchState(new FreeplayState());
 				categorySelected = 'extras';
+				case 'joke':
+					FlxG.switchState(new FreeplayState());
+					categorySelected = 'joke';
 		}
 	}
 

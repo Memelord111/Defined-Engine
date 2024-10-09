@@ -95,7 +95,7 @@ class CharacterSelectState extends MusicBeatState
 		new CharacterInSelect('bf', [1, 1, 1, 1], [
 			new CharacterForm('bf', 'Boyfriend', [1,1,1,1]),
 	//		new CharacterForm('3D BF', '3D Boyfriend', [1,1,1,1], '3D'),
-	////		new CharacterForm('pixelBF', 'Pixel Boyfriend', [1,1,1,1])
+			new CharacterForm('pixelBF', 'Pixel Boyfriend', [1,1,1,1])
 		]),
 /*
         new CharacterInSelect('Dave', [1, 1, 1, 1], [
@@ -132,7 +132,7 @@ class CharacterSelectState extends MusicBeatState
 
 		//create BG
 
-		var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('characterSelectBG'));
+		var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback'));
 		bg.antialiasing = true;
 		bg.scrollFactor.set(1, 1);
 		bg.setGraphicSize(Std.int(bg.width * 1.7));

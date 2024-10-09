@@ -3142,20 +3142,20 @@ class PlayState extends MusicBeatState
 				} else {
 					FunkinLua.setVarInArray(this, value1, value2);
 				}
-				case 'Quick note spin':
-					strumLineNotes.forEach(function(note)
-						{
-							quickSpin(note);
-						});
-						case 'Thunderstorm type black screen':
-							var ballsId:Int = Std.parseInt(value1);
-							switch (ballsId)
-							{
-								case 0: 
-									FlxTween.tween(blackScreendeez, {alpha: 0}, Conductor.stepCrochet / 500);
-								case 1:
-									FlxTween.tween(blackScreendeez, {alpha: 0.35}, Conductor.stepCrochet / 500);
-							}
+			case 'Quick note spin':
+				strumLineNotes.forEach(function(note)
+					{
+						quickSpin(note);
+					});
+			case 'Thunderstorm type black screen':
+				var ballsId:Int = Std.parseInt(value1);
+					switch (ballsId)
+					{
+						case 0: 
+							FlxTween.tween(blackScreendeez, {alpha: 0}, Conductor.stepCrochet / 500);
+						case 1:
+							FlxTween.tween(blackScreendeez, {alpha: 0.35}, Conductor.stepCrochet / 500);
+					}
 		}
 		callOnLuas('onEvent', [eventName, value1, value2]);
 	}
