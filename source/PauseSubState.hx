@@ -1,5 +1,6 @@
 package;
 
+import options.OptionsState;
 import Controls.Control;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -254,7 +255,23 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.instance.botplaySine = 0;
 				case "Options":
 					close();
-					LoadingState.loadAndSwitchState(new options.OptionsState());
+					PlayState.instance.paused = true; // For lua
+					PlayState.instance.vocals.volume = 0;
+					MusicBeatState.switchState(new OptionsState());
+					if(ClientPrefs.pauseMusic != 'None')
+					{
+						try
+						{
+							FlxG.sound.playMusic(Paths.music('pause' +(Paths.formatToSongPath(ClientPrefs.pauseMusic))), pauseMusic.volume);
+						}
+						catch(e:Dynamic)
+						{
+							trace('ERROR! $e');
+						}
+						FlxTween.tween(FlxG.sound.music, {volume: 1}, 0.8);
+						FlxG.sound.music.time = pauseMusic.time;
+					}
+					OptionsState.onPlayState = true;
 				case "Exit to menu":
 					PlayState.deathCounter = 0;
 					PlayState.seenCutscene = false;
