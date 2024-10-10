@@ -353,7 +353,7 @@ class TitleState extends MusicBeatState
 		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('DE-Logo-Og'));
 		add(ngSpr);
 		ngSpr.visible = false;
-		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
+		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.5));
 		ngSpr.updateHitbox();
 		ngSpr.screenCenter(X);
 		ngSpr.antialiasing = ClientPrefs.globalAntialiasing;
