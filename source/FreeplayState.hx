@@ -54,13 +54,32 @@ class FreeplayState extends MusicBeatState
 
 	public static var bgPaths:Array<String> = 
 	[
+		'backgrounds/Aadsta',
+		'backgrounds/ArtiztGmer',
+		'backgrounds/DeltaKastel',
+		'backgrounds/DeltaKastel2',
+		'backgrounds/DeltaKastel3',
+		'backgrounds/DeltaKastel4',
+		'backgrounds/DeltaKastel5',
+		'backgrounds/diamond man',
+		'backgrounds/Jukebox',
+		'backgrounds/kiazu',
+		'backgrounds/Lancey',
+		'backgrounds/mamakotomi',
+		'backgrounds/mantis',
+		'backgrounds/mepperpint',
+		'backgrounds/morie',
+		'backgrounds/neon',
+		'backgrounds/Olyantwo',
+		'backgrounds/Onuko',
+		'backgrounds/ps',
+		'backgrounds/ramzgaming',
+		'backgrounds/ricee_png',
+		'backgrounds/sk0rbias',
 		'backgrounds/SUSSUS AMOGUS',
 		'backgrounds/SwagnotrllyTheMod',
-		'backgrounds/Olyantwo',
-		'backgrounds/morie',
-		'backgrounds/mantis',
-		'backgrounds/mamakotomi',
-		'backgrounds/T5mpler'
+		'backgrounds/T5mpler',
+		'backgrounds/zombought',
 	];
 
 	public static function randomizeBG():flixel.system.FlxAssets.FlxGraphicAsset
@@ -315,7 +334,7 @@ class FreeplayState extends MusicBeatState
 				colorTween.cancel();
 			}
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			MusicBeatState.switchState(new MainMenuState());
+			MusicBeatState.switchState(new CategoryState());
 		}
 
 		if(ctrl)

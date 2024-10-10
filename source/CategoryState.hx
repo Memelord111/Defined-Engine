@@ -39,6 +39,7 @@ class CategoryState extends MusicBeatState
 	private var CurrentSongIcon:FlxSprite;
 
 	var icons:Array<FlxSprite> = [];
+	var titles:Array<FlxSprite> = [];
 	private var camFollow:FlxObject;
 	private static var prevCamFollow:FlxObject;
 
@@ -52,13 +53,32 @@ class CategoryState extends MusicBeatState
 
 	public static var bgPaths:Array<String> = 
 	[
+		'backgrounds/Aadsta',
+		'backgrounds/ArtiztGmer',
+		'backgrounds/DeltaKastel',
+		'backgrounds/DeltaKastel2',
+		'backgrounds/DeltaKastel3',
+		'backgrounds/DeltaKastel4',
+		'backgrounds/DeltaKastel5',
+		'backgrounds/diamond man',
+		'backgrounds/Jukebox',
+		'backgrounds/kiazu',
+		'backgrounds/Lancey',
+		'backgrounds/mamakotomi',
+		'backgrounds/mantis',
+		'backgrounds/mepperpint',
+		'backgrounds/morie',
+		'backgrounds/neon',
+		'backgrounds/Olyantwo',
+		'backgrounds/Onuko',
+		'backgrounds/ps',
+		'backgrounds/ramzgaming',
+		'backgrounds/ricee_png',
+		'backgrounds/sk0rbias',
 		'backgrounds/SUSSUS AMOGUS',
 		'backgrounds/SwagnotrllyTheMod',
-		'backgrounds/Olyantwo',
-		'backgrounds/morie',
-		'backgrounds/mantis',
-		'backgrounds/mamakotomi',
-		'backgrounds/T5mpler'
+		'backgrounds/T5mpler',
+		'backgrounds/zombought',
 	];
 
 	public static var loadingCategory:Bool = false;
@@ -83,9 +103,14 @@ class CategoryState extends MusicBeatState
 			CurrentSongIcon.y = (FlxG.height / 2) - 400;
 			CurrentSongIcon.scale.set(1,1);
 			CurrentSongIcon.antialiasing = true;
+
+			var NameAlpha:Alphabet = new Alphabet(40, (FlxG.height / 2) - -100, AllPossibleSongs[i], true);
+			NameAlpha.x = CurrentSongIcon.x;
 	
 			add(CurrentSongIcon);
 			icons.push(CurrentSongIcon);
+			add(NameAlpha);
+			titles.push(NameAlpha);
 		}
 
 		var scale:Float = 1;
@@ -156,10 +181,12 @@ class CategoryState extends MusicBeatState
 						new FlxTimer().start(0.2, function(Dumbshit:FlxTimer)
 						{
 							for (item in icons) { FlxTween.tween(item, {alpha: 0, y: item.y - 200}, 0.5, {ease: FlxEase.cubeInOut}); }
+							for (item in titles) { FlxTween.tween(item, {alpha: 0, y: item.y - 200}, 0.5, {ease: FlxEase.cubeInOut}); }
 							FlxTween.tween(camera, {'alpha': 0}, 0.4, {ease: FlxEase.cubeInOut}); // i tried to do an a lil different transition
 							new FlxTimer().start(0.7, function(Dumbshit:FlxTimer)
 							{
 								for (item in icons) { item.visible = false; }
+								for (item in titles) { item.visible = false; }
 		
 								LoadProperPack();
 								loadingCategory = false;

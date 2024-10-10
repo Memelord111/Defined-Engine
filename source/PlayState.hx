@@ -2407,6 +2407,7 @@ class PlayState extends MusicBeatState
 			}
 		nps = notesHitArray.length;
 		nps = Math.floor(notesHitArray.length / 2);
+		notesHitArray.push(Date.now());
 
 		setOnLuas('curDecStep', curDecStep);
 		setOnLuas('curDecBeat', curDecBeat);
